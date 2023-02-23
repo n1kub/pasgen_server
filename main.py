@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from logging.config import dictConfig
@@ -28,3 +29,7 @@ async def root(pass_req: PasswordRequest):
         return generate_new_password(pass_req.password_length, pass_req.has_upper, pass_req.with_special_symbols)
     else:
         return update_password(pass_req.password_to_modify, pass_req.has_upper, pass_req.with_special_symbols)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8080)
