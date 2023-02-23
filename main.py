@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from logging.config import dictConfig
 import logging
 from my_logger import LogConfig
+from service.api_models.password_req import PasswordRequest
+from service.password_generation import generate_new_password, update_password
 
 app = FastAPI(debug=True)
 
@@ -21,5 +23,8 @@ app.add_middleware(
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def root(pass_req: PasswordRequest):
+    if len(pass_req.password_to_modify) == 0:
+        return generate_new_password(pass_req.password_length, pass_req.has_upper, pass_req.with_special_symbols)
+    else:
+        return update_password(pass_req.password_to_modify, pass_req.has_upper, pass_req.with_special_symbols)
