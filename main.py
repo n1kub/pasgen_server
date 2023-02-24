@@ -26,8 +26,10 @@ app.add_middleware(
 @app.get("/")
 async def root(pass_req: PasswordRequest):
     if len(pass_req.password_to_modify) == 0:
+        logger.info(f'New request to generate password with length {pass_req.password_length}')
         return generate_new_password(pass_req.password_length, pass_req.has_upper, pass_req.with_special_symbols)
     else:
+        logger.info(f'New request to modify password: {pass_req.password_to_modify}')
         return update_password(pass_req.password_to_modify, pass_req.has_upper, pass_req.with_special_symbols)
 
 
