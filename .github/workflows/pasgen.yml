@@ -1,20 +1,22 @@
-on:
-  push:
+on: [push]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-windows@main
+    - uses: actions/setup-python@v4
       with:
-        path: ./
-
-    - uses: actions/upload-artifact@v2
+        python-version: '3.11'
+        cache: 'pip' # caching pip dependencies
+    - run: |
+        pip install -r requirements.txt
+        pyinstaller --onefile --icon=icon.png --name=pasgen main.py
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        name: pasgen
-        path: src/dist/windows
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: dist/pasgen.exe
