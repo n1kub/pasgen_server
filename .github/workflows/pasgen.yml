@@ -6,17 +6,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        cache: 'pip' # caching pip dependencies
-    - run: |
-        pip install -r requirements.txt
-        pyinstaller --onefile --icon=icon.png --name=pasgen main.py
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: false
-        files: dist/pasgen.exe
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: action-setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip' # caching pip dependencies
+        run: |
+          pip install -r requirements.txt
+          pyinstaller --onefile --icon=icon.png --name=pasgen main.py
+      - name: archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-executable
+          path: dist/pasgen.exe
