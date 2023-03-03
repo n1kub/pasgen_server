@@ -22,7 +22,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow_conclusion: success
           name: static
-          path: build
+#          path: build
           repo: n1kub/pasgen
 
       - run: |
