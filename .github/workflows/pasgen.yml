@@ -23,7 +23,7 @@ jobs:
           workflow_conclusion: success
           name: static
           path: build
-          repo: /n1kub/pasgen
+          repo: n1kub/pasgen
 
       - run: |
           pip install -r requirements.txt
