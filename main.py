@@ -1,8 +1,13 @@
+import logging
+import subprocess
+import webbrowser
+from logging.config import dictConfig
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from logging.config import dictConfig
-import logging
+from starlette.staticfiles import StaticFiles
+
 from my_logger import LogConfig
 from service.api_models.password_req import PasswordRequest
 from service.password_generation import generate_new_password, update_password
@@ -22,6 +27,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/", StaticFiles(directory="build", html=True), name="build")
+
 
 @app.get("/")
 async def root(pass_req: PasswordRequest):
@@ -34,4 +41,5 @@ async def root(pass_req: PasswordRequest):
 
 
 if __name__ == "__main__":
+    webbrowser.open("http://localhost:8080/")
     uvicorn.run(app, host="127.0.0.1", port=8080)
