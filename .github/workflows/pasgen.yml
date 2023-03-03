@@ -24,6 +24,7 @@ jobs:
           name: static
 #          path: build
           repo: n1kub/pasgen
+          search_artifacts: true
 
       - run: |
           pip install -r requirements.txt
