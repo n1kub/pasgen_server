@@ -22,13 +22,14 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow_conclusion: success
           name: static
-          path: build
+          path: web
           repo: n1kub/pasgen
           workflow: project.yml
           search_artifacts: true
 
       - run: |
           pip install -r requirements.txt
+          type nul > web/__init__.py
           pyinstaller --onefile --icon=icon.png --name=pasgen main.py
 
       - name: archive artifacts

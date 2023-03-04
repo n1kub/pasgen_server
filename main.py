@@ -1,5 +1,4 @@
 import logging
-import subprocess
 import webbrowser
 from logging.config import dictConfig
 
@@ -11,6 +10,7 @@ from starlette.staticfiles import StaticFiles
 from my_logger import LogConfig
 from service.api_models.password_req import PasswordRequest
 from service.password_generation import generate_new_password, update_password
+import web
 
 app = FastAPI(debug=True)
 
@@ -27,10 +27,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="build", html=True), name="build")
+app.mount("/", StaticFiles(packages=[("web", '')], html=True), name="web")
 
 
-@app.get("/")
+@app.get("/password")
 async def root(pass_req: PasswordRequest):
     if len(pass_req.password_to_modify) == 0:
         logger.info(f'New request to generate password with length {pass_req.password_length}')
