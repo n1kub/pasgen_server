@@ -30,7 +30,7 @@ app.add_middleware(
 app.mount("/", StaticFiles(packages=[("web", '')], html=True), name="web")
 
 
-@app.get("/password")
+@app.post("/password")
 async def root(pass_req: PasswordRequest):
     if len(pass_req.password_to_modify) == 0:
         logger.info(f'New request to generate password with length {pass_req.password_length}')
