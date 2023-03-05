@@ -29,7 +29,7 @@ jobs:
 
       - run: |
           pip install -r requirements.txt
-          echo . > web/__init__.py
+          echo. > web/__init__.py
           pyinstaller --onefile --icon=icon.png --name=pasgen main.py
 
       - name: archive artifacts
