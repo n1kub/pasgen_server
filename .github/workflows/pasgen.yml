@@ -30,7 +30,7 @@ jobs:
       - run: |
           pip install -r requirements.txt
           touch web/__init__.py
-          pyinstaller --onefile --icon=icon.png --name=pasgen main.py
+          pyinstaller pasgen.spec
 
       - name: archive artifacts
         uses: actions/upload-artifact@v3

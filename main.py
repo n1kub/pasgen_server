@@ -27,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(packages=[("web", '')], html=True), name="web")
+app.mount("/statics", StaticFiles(packages=[("web", "")], html=True), name="web")
 
 
 @app.post("/password")
@@ -41,5 +41,5 @@ async def root(pass_req: PasswordRequest):
 
 
 if __name__ == "__main__":
-    webbrowser.open("http://localhost:8080/")
+    webbrowser.open("http://localhost:8080/statics")
     uvicorn.run(app, host="127.0.0.1", port=8080)
