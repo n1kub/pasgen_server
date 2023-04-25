@@ -1,0 +1,39 @@
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: action-setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip' # caching pip dependencies
+
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow_conclusion: success
+          name: static
+          path: web
+          repo: n1kub/pasgen
+          workflow: project.yml
+          search_artifacts: true
+
+      - run: |
+          pip install -r requirements.txt
+          touch web/__init__.py
+          pyinstaller pasgen.spec
+
+      - name: archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-executable
+          path: dist/pasgen.exe
